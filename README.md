@@ -24,7 +24,7 @@ This project is a ground-up reimplementation inspired by the original [choderala
 - **Sustainability focus**: Streamlines reproducible data extraction for green chemistry, energy materials, and more
 - **Cache management**: Tools for clearing and managing parsed data caches
 - **Cross-platform compatibility**: Works on Windows, macOS, and Linux
-- **SPDX License: MIT**
+- **SPDX License: GPL-2.0**
 
 ---
 
