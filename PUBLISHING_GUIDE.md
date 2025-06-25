@@ -138,12 +138,17 @@ This step allows you to verify the package before releasing it publicly.
 
 *   **Test basic functionality**:
 
+    First, check that the package is installed and the version is correct:
     ```bash
-    python -c "import thermoml_fair; from importlib.metadata import version; print(version('thermoml_fair'))"
     thermoml-fair --version
     ```
 
-    (The Python command uses `importlib.metadata` which is the modern way to get the version specified in `pyproject.toml`.)
+    Next, perform a "smoke test" by running a core command. This ensures the package's entry points and necessary data files (like the schema) are correctly installed. From your project's root directory, run the `validate` command on a local data file:
+
+    ```powershell
+    thermoml-fair validate --file thermoml_fair/data/j.tca.2007.01.009.xml
+    ```
+    If the command reports the file is valid, your package is working correctly.
 
 ### 6. Upload to PyPI (Official Release)
 
