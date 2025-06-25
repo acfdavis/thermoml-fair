@@ -27,7 +27,7 @@ from thermoml_fair.core.utils import (
     build_pandas_dataframe,
     get_cache_dir,
 )
-from thermoml_fair.__version__ import __version__
+from thermoml_fair import __version__
 from thermoml_fair.core.config import (
     THERMOML_SCHEMA_PATH,
     THERMOML_PATH,
@@ -35,12 +35,33 @@ from thermoml_fair.core.config import (
     DEFAULT_COMPOUNDS_FILE,
 )
 from thermoml_fair.core.update_archive import update_archive as update_archive_core
+
+
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"thermoml-fair version: {__version__}")
+        raise typer.Exit()
+
+
 app = typer.Typer()
+
+@app.callback()
+def main(
+    version: Optional[bool] = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Show the version and exit.",
+    )
+):
+    # This callback will run before any command.
+    # The version_callback will exit if --version is used.
+    pass
+
 console = Console()
 
 SUPPORTED_DATAFRAME_FORMATS = {".csv", ".h5", ".hdf5", ".parquet"}
-
-logger = logging.getLogger(__name__)
 
 logger = logging.getLogger(__name__)
 
@@ -998,8 +1019,3 @@ def chemicals(
     for val in sorted(unique_values):
         typer.echo(val)
     
-
-@app.command()
-def version():
-    """Displays the current version of the thermoml_fair package."""
-    typer.echo(f"thermoml_fair version: {__version__}")
