@@ -1,0 +1,25 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+thermoml_fair/Code Citations.md
+thermoml_fair/__init__.py
+thermoml_fair.egg-info/PKG-INFO
+thermoml_fair.egg-info/SOURCES.txt
+thermoml_fair.egg-info/dependency_links.txt
+thermoml_fair.egg-info/entry_points.txt
+thermoml_fair.egg-info/requires.txt
+thermoml_fair.egg-info/top_level.txt
+thermoml_fair/core/__init__.py
+thermoml_fair/core/chemistry_utils.py
+thermoml_fair/core/config.py
+thermoml_fair/core/extract.py
+thermoml_fair/core/parser.py
+thermoml_fair/core/schema.py
+thermoml_fair/core/update_archive.py
+thermoml_fair/core/utils.py
+thermoml_fair/data/ThermoML.xsd
+thermoml_fair/scripts/__init__.py
+thermoml_fair/scripts/cli.py
+thermoml_fair/scripts/update_archive.py

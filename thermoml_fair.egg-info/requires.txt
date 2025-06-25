@@ -1,0 +1,12 @@
+typer[all]
+xmlschema>=1.11.0
+pandas
+numpy
+requests
+pymatgen
+charset-normalizer
+chardet
+
+[parquet]
+pyarrow
+fastparquet

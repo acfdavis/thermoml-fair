@@ -1,5 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Dict, Optional
+
+
+@dataclass
+class ConstraintValue:
+    constraint_type: str
+    values: List[float]
 
 
 @dataclass
@@ -29,3 +35,4 @@ class NumValuesRecord:
     component_id_map: Dict[int, str]  # in NumValuesRecord class
     source_file: str
     citation: Optional[Dict[str, str]] = None
+    constraint_values: List[ConstraintValue] = field(default_factory=list)

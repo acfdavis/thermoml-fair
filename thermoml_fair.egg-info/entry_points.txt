@@ -1,0 +1,2 @@
+[console_scripts]
+thermoml-fair = thermoml_fair.scripts.cli:app

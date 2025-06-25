@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "thermoml_fair"
-version = "1.0.12"
+version = "1.0.13"
 description = "Parser and data utilities for ThermoML datasets"
 authors = [
     { name="Angela C. Davis", email="angela.cf.davis@gmail.com" },

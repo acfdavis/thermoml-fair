@@ -54,21 +54,22 @@ def load_repository_metadata(metadata_path: str = None) -> dict:
         return {}
 
 def parse_one(file_path, xsd_path_or_obj, failed_files=None):
-    schema_for_parsing: Union[str, xmlschema.XMLSchema]
-    if xsd_path_or_obj is not None:
-        if isinstance(xsd_path_or_obj, Path):
-            schema_for_parsing = str(xsd_path_or_obj)
-        else:
-            schema_for_parsing = xsd_path_or_obj
+    # If xsd_path_or_obj is None, parsing will be attempted without schema validation.
+    # This is useful for unit tests or when a schema is not available.
+    schema_for_parsing: Union[str, xmlschema.XMLSchema, None]
+    if isinstance(xsd_path_or_obj, Path):
+        schema_for_parsing = str(xsd_path_or_obj)
     else:
-        schema_for_parsing = os.path.join(os.path.dirname(__file__), "..", "data", "ThermoML.xsd")
+        schema_for_parsing = xsd_path_or_obj
+
     try:
         return parse_thermoml_xml(file_path, xsd_path_or_obj=schema_for_parsing)
     except Exception as e:
         if failed_files is not None:
             failed_files.append(file_path)
-        # logger.error(f"Failed to parse XML file {file_path} with schema {schema_for_parsing}: {e}")
-        return [], []
+        logger.error(f"Failed to parse XML file {file_path} with schema {schema_for_parsing}: {e}")
+        # Re-raise the exception to make failures explicit, especially in testing
+        raise e
 
 
 def build_pandas_dataframe(
@@ -145,47 +146,75 @@ def build_pandas_dataframe(
             compound['source_file'] = file_path
         all_compounds_data.extend(parsed_compounds)
 
+    all_rows = []
     for record in all_parsed_records:
-        for prop in record.property_values:
-            unique_properties.add(prop.prop_name)
-            row: Dict[str, Any] = {
-                "material_id": record.material_id,
-                "components": ", ".join(record.components),
-                "thermoml_fair_version": current_thermoml_fair_version,
-                "property": prop.prop_name,
-                "value": prop.values[0] if prop.values else None,
-                "phase": prop.phase or "",
-                "method": prop.method or "",
-                "uncertainty": prop.uncertainties[0] if prop.uncertainties else None,
-                "source_file": record.source_file,
-            }
-            # Add citation info
-            if record.citation:
-                row["doi"] = record.citation.get("sDOI")
-                row["publication_year"] = row["publication_year"] = record.citation.get("yrPubYr")
-                row["title"] = record.citation.get("sTitle")
-                s_authors_list = record.citation.get("sAuthor")
-                if s_authors_list and isinstance(s_authors_list, list) and len(s_authors_list) > 0:
-                    first_author_full_string = s_authors_list[0]
-                    row["author"] = first_author_full_string.split(';')[0].strip()
-                else:
-                    row["author"] = None
-                row["journal"] = record.citation.get("sPubName")
+        # Each record represents a single property measurement.
+        # It should contain exactly one property and its associated variables/constraints.
+        if not record.property_values:
+            continue
+
+        prop = record.property_values[0]
+        unique_properties.add(prop.prop_name)
+
+        row: Dict[str, Any] = {
+            "material_id": record.material_id,
+            "components": ", ".join(record.components),
+            "thermoml_fair_version": current_thermoml_fair_version,
+            "property": prop.prop_name,
+            "value": prop.values[0] if prop.values else None,
+            "phase": prop.phase or "",
+            "method": prop.method or "",
+            "uncertainty": prop.uncertainties[0] if prop.uncertainties else None,
+            "source_file": record.source_file,
+            "thermoml_fair_version": current_thermoml_fair_version,
+        }
+
+        # Add citation info
+        if record.citation:
+            row["doi"] = record.citation.get("sDOI")
+            row["publication_year"] = record.citation.get("yrPubYr")
+            row["title"] = record.citation.get("sTitle")
+            s_authors_list = record.citation.get("sAuthor")
+            if s_authors_list and isinstance(s_authors_list, list) and len(s_authors_list) > 0:
+                first_author_full_string = s_authors_list[0]
+                row["author"] = first_author_full_string.split(';')[0].strip()
             else:
-                row["doi"] = None
-                row["publication_year"] = None
-                row["title"] = None
                 row["author"] = None
-                row["journal"] = None
-            # Convert None values in citation fields to empty strings for DataFrame consistency
-            citation_keys = ["doi", "publication_year", "title", "author", "journal"]
-            for key in citation_keys:
-                if row[key] is None:
-                    row[key] = ""
-            all_records.append(row)
+            row["journal"] = record.citation.get("sPubName")
+        else:
+            row["doi"] = None
+            row["publication_year"] = None
+            row["title"] = None
+            row["author"] = None
+            row["journal"] = None
+
+        # Convert None values in citation fields to empty strings for DataFrame consistency
+        citation_keys = ["doi", "publication_year", "title", "author", "journal"]
+        for key in citation_keys:
+            if key in row and row[key] is None:
+                row[key] = ""
+
+        # Add variables as columns
+        for var in record.variable_values:
+            col_name = var.var_type
+            try:
+                row[col_name] = float(var.values[0]) if var.values else None
+            except (ValueError, IndexError):
+                row[col_name] = var.values[0] if var.values else None
+
+        # Add constraints as columns, prefixing with 'constraint_'
+        for const in record.constraint_values:
+            col_name = f"constraint_{const.constraint_type}"
+            try:
+                row[col_name] = float(const.values[0]) if const.values else None
+            except (ValueError, TypeError):
+                row[col_name] = const.values[0] if const.values else None
+
+        all_rows.append(row)
+
 
     # Create DataFrames from the collected records
-    df = pd.DataFrame(all_records)
+    df = pd.DataFrame(all_rows)
 
     # Ensure normalized_formula and active_components columns exist if normalize_alloys is True
     if normalize_alloys:
@@ -271,6 +300,35 @@ def build_pandas_dataframe(
         valid_subset_keys = [k for k in subset_keys if k in compounds_df.columns]
         if valid_subset_keys:
             compounds_df = compounds_df.drop_duplicates(subset=valid_subset_keys).reset_index(drop=True)
+
+    # Create a map from component name to formula from the clean compounds_df
+    if not compounds_df.empty and 'sCommonName' in compounds_df.columns and 'sFormulaMolec' in compounds_df.columns:
+        compound_formula_map = pd.Series(
+            compounds_df.sFormulaMolec.values,
+            index=compounds_df.sCommonName
+        ).to_dict()
+    else:
+        compound_formula_map = {}
+
+    # Create the final 'formula' column for matminer
+    def get_final_formula(row):
+        # If it's an alloy and we have a pretty formula, use it.
+        if row.get('normalized_formula') and pd.notna(row.get('normalized_formula')) and row.get('normalized_formula') != '':
+            return row['normalized_formula']
+        # Otherwise, it's a single component or mixture.
+        components = row['components'].split(', ')
+        if len(components) == 1:
+            # It's a pure substance, get its formula.
+            return compound_formula_map.get(components[0], '')
+        # It's a mixture that wasn't normalized as an alloy.
+        # Return empty string as there's no single formula.
+        return ''
+
+    if not df.empty:
+        df['formula'] = df.apply(get_final_formula, axis=1)
+    else:
+        # Ensure the column exists even for an empty DataFrame
+        df['formula'] = ''
 
     # Create properties DataFrame
     properties_df = pd.DataFrame(sorted(list(unique_properties)), columns=['sPropName'])
