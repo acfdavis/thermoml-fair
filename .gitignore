@@ -117,5 +117,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-thermoml_analysis.ipynb
 *.csv
+thermoml_analysis.ipynb
