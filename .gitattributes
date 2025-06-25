@@ -1,3 +1,4 @@
+*.csv filter=lfs diff=lfs merge=lfs -text
 thermoml_data.csv filter=lfs diff=lfs merge=lfs -text
 thermoml_compounds.csv filter=lfs diff=lfs merge=lfs -text
 thermoml_properties.csv filter=lfs diff=lfs merge=lfs -text
