@@ -1,6 +1,7 @@
 graft thermoml_fair
-include thermoml_fair/data/ThermoML.xsd
-exclude thermoml_fair/data/*.xml
 prune thermoml_fair/tests
-prune thermoml_fair/**/__pycache__
-exclude PUBLISHING_GUIDE.md
+prune thermoml_fair/data
+
+# Exclude top-level data files from the package distribution
+exclude *.csv
+exclude *.ipynb
