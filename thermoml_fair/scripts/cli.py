@@ -355,7 +355,8 @@ def build_dataframe(
     normalize_alloys_flag: bool = typer.Option(False, "--normalize-alloys", help="Enable alloy normalization (requires pymatgen)."),
     output_hdf_key_data: str = typer.Option("data", help="Key for main data in HDF5 output."),
     output_hdf_key_compounds: str = typer.Option("compounds", help="Key for compounds data in HDF5 output."),
-    max_workers: Optional[int] = typer.Option(None, "--max-workers", "-mw", help="Maximum number of worker processes for parallel DataFrame construction. Defaults to the number of CPUs.")
+    max_workers: Optional[int] = typer.Option(None, "--max-workers", "-mw", help="Maximum number of worker processes for parallel DataFrame construction. Defaults to the number of CPUs."),
+    show_failed_files: bool = typer.Option(False, "--show-failed-files", help="Show a detailed list of files that failed to parse.")
 ):
     """
     Builds DataFrames from ThermoML data.
@@ -458,6 +459,7 @@ def build_dataframe(
         df_compounds = data_bundle.get('compounds')
         df_properties = data_bundle.get('properties')
         repo_meta_content = data_bundle.get('repository_metadata') # This is the (potentially updated) metadata
+        failed_files = data_bundle.get('failed_files', [])
 
         if df_data is not None and not df_data.empty:
             output_data_file_format = output_data_file.suffix.lower()
@@ -537,6 +539,18 @@ def build_dataframe(
 
         typer.echo("DataFrame construction and saving complete.")
 
+        if failed_files:
+            typer.echo(f"\n[WARNING] {len(failed_files)} file(s) failed to parse and were skipped.", err=True)
+            if show_failed_files:
+                typer.echo("Failed files:", err=True)
+                for f in failed_files:
+                    typer.echo(f"  - {Path(f).name}", err=True)
+            else:
+                typer.echo("Use --show-failed-files to see the list of failed files.", err=True)
+            raise typer.Exit(code=1)
+
+    except typer.Exit as e:
+        raise e
     except Exception as e:
         typer.echo(f"[ERROR] An error occurred during DataFrame construction: {e}", err=True)
         typer.echo(traceback.format_exc(), err=True)
@@ -1018,4 +1032,3 @@ def chemicals(
     typer.echo(f"Unique values for '{field}'")
     for val in sorted(unique_values):
         typer.echo(val)
-    

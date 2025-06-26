@@ -53,7 +53,7 @@ def load_repository_metadata(metadata_path: str = None) -> dict:
         logger.warning(f"Could not load repository metadata from {metadata_path}: {e}")
         return {}
 
-def parse_one(file_path, xsd_path_or_obj, failed_files=None):
+def parse_one(file_path, xsd_path_or_obj):
     # If xsd_path_or_obj is None, parsing will be attempted without schema validation.
     # This is useful for unit tests or when a schema is not available.
     schema_for_parsing: Union[str, xmlschema.XMLSchema, None]
@@ -65,11 +65,11 @@ def parse_one(file_path, xsd_path_or_obj, failed_files=None):
     try:
         return parse_thermoml_xml(file_path, xsd_path_or_obj=schema_for_parsing)
     except Exception as e:
-        if failed_files is not None:
-            failed_files.append(file_path)
-        logger.error(f"Failed to parse XML file {file_path} with schema {schema_for_parsing}: {e}")
-        # Re-raise the exception to make failures explicit, especially in testing
-        raise e
+        # Log the error with traceback for debugging, but return a failure indicator
+        # so the main process can track failed files without crashing.
+        logger.error(f"Failed to parse XML file {file_path}: {e}\n{traceback.format_exc()}")
+        # Re-raise the exception to be caught by the caller in the loop
+        raise
 
 
 def build_pandas_dataframe(
@@ -77,8 +77,7 @@ def build_pandas_dataframe(
     normalize_alloys: bool = False, 
     repository_metadata: Optional[dict] = None,
     xsd_path_or_obj: Optional[Union[str, Path, xmlschema.XMLSchema]] = None, # Added new parameter
-    max_workers: Optional[int] = None, # New parameter for parallelism
-    show_failed_files: bool = False # New parameter for optional detailed failed file list
+    max_workers: Optional[int] = None # New parameter for parallelism
 ) -> dict:
     """
     Build pandas DataFrames from ThermoML XML files and include repository-level metadata.
@@ -124,19 +123,27 @@ def build_pandas_dataframe(
         with Progress(*progress_columns) as progress:
             task_id = progress.add_task("Parsing XML files...", total=len(xml_files))
             for file_path in xml_files:
-                parsed_records, parsed_compounds = parse_one(file_path, xsd_path_or_obj, failed_files=failed_files)
-                results.append((file_path, (parsed_records, parsed_compounds)))
-                progress.update(task_id, advance=1)
+                try:
+                    parsed_records, parsed_compounds = parse_one(file_path, xsd_path_or_obj)
+                    results.append((file_path, (parsed_records, parsed_compounds)))
+                except Exception:
+                    failed_files.append(file_path)
+                finally:
+                    progress.update(task_id, advance=1)
     else:
         with Progress(*progress_columns) as progress:
             task_id = progress.add_task("Parsing XML files...", total=len(xml_files))
             with ProcessPoolExecutor(max_workers=max_workers) as executor:
-                future_to_file = {executor.submit(parse_one, file_path, xsd_path_or_obj, failed_files): file_path for file_path in xml_files}
+                future_to_file = {executor.submit(parse_one, file_path, xsd_path_or_obj): file_path for file_path in xml_files}
                 for future in as_completed(future_to_file):
                     file_path = future_to_file[future]
-                    parsed_records, parsed_compounds = future.result()
-                    results.append((file_path, (parsed_records, parsed_compounds)))
-                    progress.update(task_id, advance=1)
+                    try:
+                        parsed_records, parsed_compounds = future.result()
+                        results.append((file_path, (parsed_records, parsed_compounds)))
+                    except Exception:
+                        failed_files.append(file_path)
+                    finally:
+                        progress.update(task_id, advance=1)
 
     # Flatten results and process as before
     all_parsed_records = []
@@ -336,16 +343,16 @@ def build_pandas_dataframe(
     # After parsing, print summary of failed files
     if failed_files:
         print(f"\n⚠️ Failed to parse {len(failed_files)} XML file(s) out of {len(xml_files)}.")
-        if show_failed_files:
-            print("Failed files:")
-            for f in failed_files:
-                print(f"  - {f}")
+        print("Failed files:")
+        for f in failed_files:
+            print(f"  - {f}")
 
     return {
         "data": df,
         "compounds": compounds_df,
         "properties": properties_df,
-        "repository_metadata": repository_metadata
+        "repository_metadata": repository_metadata,
+        "failed_files": failed_files
     }
 
 
