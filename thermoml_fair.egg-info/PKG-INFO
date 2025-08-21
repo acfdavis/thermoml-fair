@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: thermoml_fair
-Version: 1.0.13
+Version: 1.0.14
 Summary: Parser and data utilities for ThermoML datasets
 Author-email: "Angela C. Davis" <angela.cf.davis@gmail.com>
 License-Expression: MIT

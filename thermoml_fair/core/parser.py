@@ -165,6 +165,13 @@ def parse_thermoml_xml(file_path: str, xsd_path_or_obj: Optional[str | xmlschema
                         get_tag(group, "VolumetricProp", ns)
                         or get_tag(group, "TransportProp", ns)
                         or get_tag(group, "ThermodynProp", ns)
+                        or get_tag(group, "HeatCapacityAndDerivedProp", ns)
+                        or get_tag(group, "ActivityFugacityOsmoticProp", ns)
+                        or get_tag(group, "ReactionStateChangeProp", ns)
+                        or get_tag(group, "ReactionEquilibriumProp", ns)
+                        or get_tag(group, "ExcessPartialApparentEnergyProp", ns)
+                        or get_tag(group, "BioProperties", ns)
+                        or get_tag(group, "PhaseTransition", ns)
                         or {}
                     )
                     name = get_tag(group, "ePropName", ns)
