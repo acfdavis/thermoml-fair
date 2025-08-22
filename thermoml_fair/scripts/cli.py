@@ -775,9 +775,17 @@ def summarize_archive(
             else:
                 summary_dict["unique_components_count"] = "N/A ('components' column missing)"
 
-            prop_cols = [col for col in df.columns if col.startswith("prop_")]
-            summary_dict["property_types_count"] = len(prop_cols)
-            summary_dict["property_types_available"] = prop_cols
+            # Updated logic to handle both "long" and "wide" property formats
+            if 'property' in df.columns:
+                # "Long" format: properties are values in a 'property' column
+                unique_properties = df['property'].dropna().unique()
+                summary_dict["property_types_count"] = len(unique_properties)
+                summary_dict["property_types_available"] = sorted(list(unique_properties))
+            else:
+                # "Wide" format: properties are columns starting with 'prop_'
+                prop_cols = [col for col in df.columns if col.startswith("prop_")]
+                summary_dict["property_types_count"] = len(prop_cols)
+                summary_dict["property_types_available"] = prop_cols
 
             if 'publication_year' in df.columns:
                 years = pd.to_numeric(df['publication_year'], errors='coerce').dropna()
