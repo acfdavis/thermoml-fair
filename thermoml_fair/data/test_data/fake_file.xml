@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ThermoML xmlns="http://www.iupac.org/namespaces/ThermoML">
+  <Citation>
+    <sDOI>10.0000/demo.deep.doi</sDOI>
+    <sTitle>Advanced Synthetic ThermoML Dataset</sTitle>
+    <sPubName>Journal of Synthetic Thermodynamics</sPubName>
+    <yrPubYr>2025</yrPubYr>
+    <sAuthor>Doe, Jane; Smith, John;</sAuthor>
+  </Citation>
+  <Compound>
+    <RegNum><nOrgNum>1</nOrgNum></RegNum>
+    <sCommonName>Fictitium</sCommonName>
+    <sFormulaMolec>Ft1</sFormulaMolec>
+    <sCASRegistryNum>1111-11-1</sCASRegistryNum>
+  </Compound>
+  <Compound>
+    <RegNum><nOrgNum>2</nOrgNum></RegNum>
+    <sCommonName>Imaginarene</sCommonName>
+    <sFormulaMolec>Im2</sFormulaMolec>
+    <sCASRegistryNum>2222-22-2</sCASRegistryNum>
+  </Compound>
+  <PureOrMixtureData>
+    <Component><RegNum><nOrgNum>1</nOrgNum></RegNum></Component>
+    <Component><RegNum><nOrgNum>2</nOrgNum></RegNum></Component>
+
+    <Property>
+      <nPropNumber>1</nPropNumber>
+      <PropertyMethodID>
+        <PropertyGroup>
+          <VolumetricProp>
+            <ePropName>Density</ePropName>
+            <eMethodName>SyntheticMethod</eMethodName>
+          </VolumetricProp>
+        </PropertyGroup>
+      </PropertyMethodID>
+      <PropPhaseID><ePropPhase>Liquid</ePropPhase></PropPhaseID>
+    </Property>
+
+    <Property>
+      <nPropNumber>2</nPropNumber>
+      <PropertyMethodID>
+        <PropertyGroup>
+          <TransportProp>
+            <ePropName>Viscosity</ePropName>
+            <eMethodName>Calculated</eMethodName>
+          </TransportProp>
+        </PropertyGroup>
+      </PropertyMethodID>
+      <PropPhaseID><ePropPhase>Liquid</ePropPhase></PropPhaseID>
+    </Property>
+
+    <Variable>
+      <nVarNumber>1</nVarNumber>
+      <VariableID><VariableType><eVarType>Temperature</eVarType></VariableType></VariableID>
+    </Variable>
+    <Variable>
+      <nVarNumber>2</nVarNumber>
+      <VariableID><VariableType><eVarType>Pressure</eVarType></VariableType></VariableID>
+    </Variable>
+
+    <NumValues>
+      <VariableValue><nVarNumber>1</nVarNumber><nVarValue>298.15</nVarValue></VariableValue>
+      <VariableValue><nVarNumber>2</nVarNumber><nVarValue>101325</nVarValue></VariableValue>
+      <PropertyValue>
+        <nPropNumber>1</nPropNumber><nPropValue>850.0</nPropValue>
+        <PropUncertainty><nStdUncertValue>2.0</nStdUncertValue></PropUncertainty>
+      </PropertyValue>
+      <PropertyValue>
+        <nPropNumber>2</nPropNumber><nPropValue>0.0015</nPropValue>
+        <PropUncertainty><nStdUncertValue>0.0001</nStdUncertValue></PropUncertainty>
+      </PropertyValue>
+    </NumValues>
+
+    <NumValues>
+      <VariableValue><nVarNumber>1</nVarNumber><nVarValue>310.0</nVarValue></VariableValue>
+      <VariableValue><nVarNumber>2</nVarNumber><nVarValue>102000</nVarValue></VariableValue>
+      <PropertyValue>
+        <nPropNumber>1</nPropNumber><nPropValue>820.0</nPropValue>
+        <PropUncertainty><nStdUncertValue>1.5</nStdUncertValue></PropUncertainty>
+      </PropertyValue>
+      <PropertyValue>
+        <nPropNumber>2</nPropNumber><nPropValue>0.0017</nPropValue>
+        <PropUncertainty><nStdUncertValue>0.00015</nStdUncertValue></PropUncertainty>
+      </PropertyValue>
+    </NumValues>
+  </PureOrMixtureData>
+</ThermoML>

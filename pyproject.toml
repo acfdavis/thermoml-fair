@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "thermoml_fair"
-version = "1.0.24"
+name = "thermoml_  fair"
+version = "1.0.25"
 description = "Parser and data utilities for ThermoML datasets"
 authors = [
     { name="Angela C. Davis", email="angela.cf.davis@gmail.com" },
