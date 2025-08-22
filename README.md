@@ -161,6 +161,16 @@ Here's a typical workflow for using the `thermoml_fair` CLI. By default, files a
 - **Compounds DataFrame**: Always includes a `symbol` column (chemical formula or fallback name) for all files, supporting robust downstream analytics.
 - **Rich CLI output**: Progress bars and status messages for all major operations.
 
+### Property Coverage
+
+ThermoML-FAIR captures a wide range of thermophysical properties from the NIST ThermoML Archive.  
+The dataset includes **97 unique properties**, spanning transport, thermodynamic, and phase equilibrium measurements.  
+The chart below highlights the **Top 10 most frequently reported properties**:
+
+<img width="997" height="590" alt="image" src="https://github.com/user-attachments/assets/65ddc043-230b-4ce9-8a90-c500be63e1cb" />
+
+*Figure 1. Distribution of the top 10 most frequently reported thermophysical properties in the ThermoML dataset. Dataset covers 97 unique properties in total.*
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request. For Parquet support, install with `pip install 'thermoml-fair[parquet]'` before running related tests.
@@ -254,3 +264,4 @@ Materials Scientist passionate about sustainable data-driven discovery and imple
 - Mission: To build tools and workflows that accelerate sustainable innovation and challenge myself to create a better future
 
 **Contact:** <angela.cf.davis@gmail.com>
+
