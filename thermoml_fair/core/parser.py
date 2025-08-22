@@ -172,6 +172,10 @@ def parse_thermoml_xml(file_path: str, xsd_path_or_obj: Optional[str | xmlschema
                         or get_tag(group, "ExcessPartialApparentEnergyProp", ns)
                         or get_tag(group, "BioProperties", ns)
                         or get_tag(group, "PhaseTransition", ns)
+                        or get_tag(group, "Criticals", ns)
+                        or get_tag(group, "CompositionAtPhaseEquilibrium", ns)
+                        or get_tag(group, "RefractionSurfaceTensionSoundSpeed", ns)
+                        or get_tag(group, "VaporPBoilingTAzeotropTandP", ns)
                         or {}
                     )
                     name = get_tag(group, "ePropName", ns)
