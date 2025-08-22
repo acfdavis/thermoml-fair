@@ -175,7 +175,7 @@ This breadth of high-quality, peer-reviewed data is rare in materials informatic
 By making 97 distinct properties machine learning–ready, ThermoML-FAIR enables reproducible benchmarking and cross-property modeling workflows.  
 Such coverage supports not only thermal conductivity or viscosity prediction but also broader efforts in sustainable materials discovery and process design.
 
-> ⚠️ **Note**: While ThermoML-FAIR implements schema validation and robust error handling, the ThermoML archive contains inconsistencies across files and versions. Some rare properties or edge-case entries may not parse perfectly.  
+> ⚠️ **Note**: While ThermoML-FAIR implements schema validation and robust error handling, some rare properties or edge-case entries may not parse perfectly.  
 > I encourage users to review outputs for their specific use case and welcome contributions to further improve coverage.
 
 ## Contributing
@@ -276,3 +276,4 @@ Materials Scientist and Data Innovator passionate about sustainable materials di
 Through ThermoML-FAIR and related projects, Angela bridges **experimental expertise** with **modern data science and ML**, creating open, scalable workflows that advance sustainability and innovation.  
 
 **Contact:** <angela.cf.davis@gmail.com>
+
