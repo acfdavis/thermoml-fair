@@ -161,6 +161,23 @@ Here's a typical workflow for using the `thermoml_fair` CLI. By default, files a
 - **Compounds DataFrame**: Always includes a `symbol` column (chemical formula or fallback name) for all files, supporting robust downstream analytics.
 - **Rich CLI output**: Progress bars and status messages for all major operations.
 
+### Property Coverage
+
+ThermoML-FAIR captures a wide range of thermophysical properties from the NIST ThermoML Archive.  
+The dataset includes **97 unique properties**, spanning transport, thermodynamic, and phase equilibrium measurements.  
+The chart below highlights the **Top 10 most frequently reported properties**:
+
+<img width="997" height="590" alt="image" src="https://github.com/user-attachments/assets/65ddc043-230b-4ce9-8a90-c500be63e1cb" />
+
+*Figure 1. Distribution of the top 10 most frequently reported thermophysical properties in the ThermoML dataset. Dataset covers 97 unique properties in total.*
+
+This breadth of high-quality, peer-reviewed data is rare in materials informatics.  
+By making 97 distinct properties machine learning–ready, ThermoML-FAIR enables reproducible benchmarking and cross-property modeling workflows.  
+Such coverage supports not only thermal conductivity or viscosity prediction but also broader efforts in sustainable materials discovery and process design.
+
+> ⚠️ **Note**: While ThermoML-FAIR implements schema validation and robust error handling, some rare properties or edge-case entries may not parse perfectly.  
+> I encourage users to review outputs for their specific use case and welcome contributions to further improve coverage.
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request. For Parquet support, install with `pip install 'thermoml-fair[parquet]'` before running related tests.
@@ -238,19 +255,25 @@ Linting and type checking are recommended (e.g., Black, Flake8, MyPy) before com
 
 ## Project Motivation & Impact
 
-Modern materials science and data-driven discovery require robust, high-quality datasets. ThermoML-FAIR enables rapid, reproducible access to thermophysical property data from the NIST ThermoML Archive, supporting open science, sustainability, and advanced analytics. The toolkit empowers users to build ML-ready datasets for property prediction, process modeling, and informatics, and integrates seamlessly with tools like Matminer for feature extraction and ML pipeline development.
+Modern materials science and machine learning rely on robust, high-quality datasets.  
+ThermoML-FAIR unlocks over **2.6 million peer-reviewed experimental measurements** spanning **97 distinct thermophysical properties** from leading journals such as *Journal of Chemical & Engineering Data*, *Journal of Chemical Thermodynamics*, and *Fluid Phase Equilibria*.  
 
-ThermoML-FAIR is a step toward a future where data and automation drive sustainable materials innovation.
+By converting the NIST ThermoML archives into FAIR, ML-ready formats, this toolkit enables reproducible benchmarking, cross-property modeling, and sustainable materials discovery.  
+ThermoML-FAIR is a step toward a future where validated data and automation accelerate innovation in **green chemistry, energy materials, and advanced manufacturing**.
+
 
 ---
 
 ## About the Author
 
 **Angela C. Davis**  
-Materials Scientist passionate about sustainable data-driven discovery and implementation.
+Materials Scientist and Data Innovator passionate about sustainable materials discovery and open science.  
 
-- Background: Coatings, thermoplastics, polymer AM, composites, green chemistry, corrosion, advanced manufacturing
-- Focus: AI, data science, materials informatics, process modeling, and continuous learning
-- Mission: To build tools and workflows that accelerate sustainable innovation and challenge myself to create a better future
+- **Background:** Coatings, thermoplastics, polymer AM, composites, green chemistry, corrosion, advanced manufacturing  
+- **Focus:** AI, data science, materials informatics, process modeling, and continuous learning  
+- **Mission:** To build FAIR, reproducible tools that accelerate sustainable innovation and enable the community to unlock peer-reviewed data for next-generation discovery  
+
+Through ThermoML-FAIR and related projects, Angela bridges **experimental expertise** with **modern data science and ML**, creating open, scalable workflows that advance sustainability and innovation.  
 
 **Contact:** <angela.cf.davis@gmail.com>
+
