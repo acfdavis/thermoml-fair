@@ -8,7 +8,7 @@ import traceback # Added
 from thermoml_fair.core.parser import parse_thermoml_xml
 from pymatgen.core import Element, Composition # Ensure Composition is imported
 import logging
-from thermoml_fair import __version__ as thermoml_fair_version # Added import for version
+from importlib import metadata
 from rich.progress import track
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from thermoml_fair.core.config import THERMOML_PATH, DEFAULT_CACHE_DIR_NAME
@@ -93,7 +93,11 @@ def build_pandas_dataframe(
     failed_files = []
 
     # Get thermoml_fair version
-    current_thermoml_fair_version = thermoml_fair_version
+    try:
+        current_thermoml_fair_version = metadata.version("thermoml-fair")
+    except metadata.PackageNotFoundError:
+        # This happens when the package is not installed, e.g., when running from source for tests.
+        current_thermoml_fair_version = "unknown"
 
     def pretty_formula(frac_dict: Dict[str, float]) -> str:
         parts = []

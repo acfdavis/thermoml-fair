@@ -6,7 +6,7 @@ from thermoml_fair.core.utils import get_fn, build_pandas_dataframe, pandas_data
 def test_build_pandas_dataframe():
     tmpdir = tempfile.mkdtemp()
     try:
-        filenames = [get_fn("je8006138.xml")]
+        filenames = [get_fn("test_data/je8006138.xml")]
         result = build_pandas_dataframe(filenames)
         data = result["data"]
         compounds = result["compounds"]
@@ -36,7 +36,7 @@ def test_build_pandas_dataframe():
         shutil.rmtree(tmpdir)
         
 def test_parsed_content_correctness():
-    filenames = [get_fn("je8006138.xml")]
+    filenames = [get_fn("test_data/je8006138.xml")]
     result = build_pandas_dataframe(filenames)
     data = result["data"]
     compounds = result["compounds"]

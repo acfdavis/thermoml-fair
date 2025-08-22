@@ -146,7 +146,7 @@ This step allows you to verify the package before releasing it publicly.
     Next, perform a "smoke test" by running a core command. This ensures the package's entry points and necessary data files (like the schema) are correctly installed. From your project's root directory, run the `validate` command on a local data file:
 
     ```powershell
-    thermoml-fair validate --file thermoml_fair/data/j.tca.2007.01.009.xml
+    thermoml-fair validate --file thermoml_fair/data/test_data/j.tca.2007.01.009.xml
     ```
     If the command reports the file is valid, your package is working correctly.
 

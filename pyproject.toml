@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "thermoml_fair"
-version = "1.0.15"
+version = "1.0.23"
 description = "Parser and data utilities for ThermoML datasets"
 authors = [
     { name="Angela C. Davis", email="angela.cf.davis@gmail.com" },
 ]
 requires-python = ">=3.8"
 readme = "README.md"
-license = "MIT" # SPDX license string
+license = "GPL-3.0-or-later"
 
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -23,6 +23,7 @@ dependencies = [
     "pandas",
     "numpy",
     "requests",
+    "xmltodict",
     "pymatgen",
     "charset-normalizer",
     "chardet",
@@ -39,4 +40,4 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["thermoml_fair*"]
-exclude = ["thermoml_fair.tests*", "thermoml_fair.data*"]
+exclude = ["thermoml_fair.tests*", "thermoml_fair.data/test_data/*.xsd*"]

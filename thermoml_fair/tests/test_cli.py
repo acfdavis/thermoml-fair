@@ -12,7 +12,7 @@ import pandas as pd
 runner = CliRunner()
 
 # Existing sample files
-SAMPLE_XML_DIR = Path("thermoml_fair/data") # Corrected path relative to package
+SAMPLE_XML_DIR = Path("thermoml_fair/data/test_data") # Corrected path relative to package
 SAMPLE_XML_1 = SAMPLE_XML_DIR / "j.tca.2007.01.009.xml"
 SAMPLE_XML_2 = SAMPLE_XML_DIR / "acs.jced.8b00050.xml" # Add another for variety
 # SCHEMA_PATH is no longer needed here as CLI handles it

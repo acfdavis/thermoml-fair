@@ -1,9 +1,9 @@
 Metadata-Version: 2.4
 Name: thermoml_fair
-Version: 1.0.14
+Version: 1.0.23
 Summary: Parser and data utilities for ThermoML datasets
 Author-email: "Angela C. Davis" <angela.cf.davis@gmail.com>
-License-Expression: MIT
+License-Expression: GPL-3.0-or-later
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.8
@@ -14,6 +14,7 @@ Requires-Dist: xmlschema>=1.11.0
 Requires-Dist: pandas
 Requires-Dist: numpy
 Requires-Dist: requests
+Requires-Dist: xmltodict
 Requires-Dist: pymatgen
 Requires-Dist: charset-normalizer
 Requires-Dist: chardet

@@ -29,7 +29,7 @@ utils_logger.propagate = False
 
 # Test files (replace with your actual file paths or use a fixture)
 # Assuming test_dir should point to data within the thermoml_fair package if tests are run from project root
-test_dir = os.path.join(os.path.dirname(__file__), "..", "..", "thermoml_fair", "data") # Adjusted path
+test_dir = os.path.join(os.path.dirname(__file__), "..", "data", "test_data") # Adjusted path
 # If tests are run from within thermopyl/thermoml_fair/tests, this might need to be:
 # test_dir = os.path.join(os.path.dirname(__file__), "..", "data")
 # This needs to be robust depending on how pytest discovers/runs tests.

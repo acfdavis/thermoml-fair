@@ -46,8 +46,8 @@ pd.set_option('display.max_colwidth', None)
 # Assuming test_files should point to data within the thermoml_fair package
 # This path needs to be relative to the thermoml_fair package if tests are run correctly.
 # For now, constructing path assuming tests are in thermopyl/thermoml_fair/tests
-# and data is in thermopyl/thermoml_fair/data
-data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
+# and data is in thermopyl/thermoml_fair/data/test_data
+data_dir = os.path.join(os.path.dirname(__file__), "..", "data", "test_data")
 
 test_files = [get_fn(os.path.join(data_dir, f)) for f in [ # Adjusted path
     "je8006138.xml",
@@ -114,7 +114,7 @@ def test_schema_validation():
 def test_compound_parsing():
     expected_compounds = {
         "je8006138.xml": ["C6H12", "C6H14", "C24H51O4P"],
-        # "acs.jced.8b00050.xml": ["C12H18N2O3S", "C10H13ClN2O3S"],  # Commented out to match test_files
+        "acs.jced.8b00050.xml": ["C12H18N2O3S", "C10H13ClN2O3S", "CO2"],
         "acs.jced.8b00745.xml": ["C2H6O", "C31H52O3", "CO2"],
         "j.tca.2012.07.033.xml": ["Bi", "Zn", "Al"],
         "j.tca.2007.01.009.xml": ["Pb", "Cd", "Sn", "Zn"]

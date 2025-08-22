@@ -9,6 +9,7 @@ import shutil
 import traceback
 import json
 import dataclasses
+from importlib import metadata
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, Dict, Optional, List, Tuple
@@ -21,13 +22,13 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
 from rich.table import Table
+from importlib import metadata
 
 from thermoml_fair.core.parser import parse_thermoml_xml
 from thermoml_fair.core.utils import (
     build_pandas_dataframe,
     get_cache_dir,
 )
-from thermoml_fair import __version__
 from thermoml_fair.core.config import (
     THERMOML_SCHEMA_PATH,
     THERMOML_PATH,
@@ -39,7 +40,7 @@ from thermoml_fair.core.update_archive import update_archive as update_archive_c
 
 def version_callback(value: bool):
     if value:
-        typer.echo(f"thermoml-fair version: {__version__}")
+        typer.echo(f"thermoml-fair version: {metadata.version('thermoml-fair')}")
         raise typer.Exit()
 
 

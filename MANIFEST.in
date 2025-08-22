@@ -1,6 +1,6 @@
 graft thermoml_fair
 prune thermoml_fair/tests
-prune thermoml_fair/data
+prune thermoml_fair/data/test_data
 
 # Exclude top-level data files from the package distribution
 exclude *.csv

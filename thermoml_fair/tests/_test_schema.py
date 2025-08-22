@@ -7,7 +7,7 @@ def validate_xml(schema_path, file_path):
 
 def test_all_thermoml_files_validate():
     schema_path = "ThermoML.xsd"
-    data_dir = "thermoml-fair/data"
+    data_dir = "thermoml-fair/data/test_data"
     xml_files = [f for f in os.listdir(data_dir) if f.endswith(".xml")]
 
     assert xml_files, "No XML files found for validation."

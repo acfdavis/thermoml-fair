@@ -3,6 +3,7 @@ xmlschema>=1.11.0
 pandas
 numpy
 requests
+xmltodict
 pymatgen
 charset-normalizer
 chardet
